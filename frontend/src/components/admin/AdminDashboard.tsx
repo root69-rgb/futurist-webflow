@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +12,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import PolicyManager, { PolicyType } from '../policy/PolicyManager';
 import { Button } from '@/components/ui/button';
 import AdminPageManager from './AdminPageManager';
-import AdminUserManager from './AdminUserManager';
 import AdminMediaLibrary from './AdminMediaLibrary';
 import AdminSettings from './AdminSettings';
 
@@ -31,7 +29,7 @@ const AdminDashboard = () => {
   return (
     <>
       <Tabs defaultValue="analytics" className="w-full">
-        <TabsList className="grid w-full grid-cols-8 mb-8 overflow-x-auto flex-nowrap">
+        <TabsList className="grid w-full md:grid-cols-8 grid-cols-2 mb-8 overflow-x-auto flex-nowrap">
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="blog">Blog</TabsTrigger>
           <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
