@@ -9,8 +9,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, LogOut, Fingerprint, Lock } from "lucide-react";
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+import AdminNavbar from '@/components/layout/AdminNavbar';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 import { login, checkAuth, logout, authenticateBiometric } from '@/services/authService';
 
@@ -189,112 +188,106 @@ const AdminPage = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen bg-muted/30 pt-28 pb-20">
-        <div className="container mx-auto px-4">
-          {!isLoggedIn ? (
-            <div className="max-w-md mx-auto">
-              <Card className="border border-border shadow-md">
-                <CardHeader>
-                  <Button 
-                    variant="ghost" 
-                    className="w-fit p-0 mb-4"
-                    onClick={() => navigate('/')}
-                  >
-                    <ChevronLeft className="mr-1 h-4 w-4" />
-                    Back to website
-                  </Button>
-                  <CardTitle className="text-2xl font-bold">Admin Access</CardTitle>
-                  <CardDescription>
-                    Enter your admin password or use biometric authentication to access the dashboard
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {isBiometricSupported && (
-                    <div className="mb-6 text-center">
-                      <Button 
-                        onClick={handleBiometricLogin} 
-                        disabled={isLoading} 
-                        className="w-full"
-                      >
-                        <Fingerprint className="mr-2 h-5 w-5" />
-                        Authenticate with Fingerprint
-                      </Button>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Use your device's biometric authentication
-                      </p>
-                      <div className="relative my-4">
-                        <div className="absolute inset-0 flex items-center">
-                          <span className="w-full border-t" />
-                        </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-background px-2 text-muted-foreground">Or</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <div className="relative">
-                                <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                                <Input 
-                                  type="password" 
-                                  placeholder="••••••••" 
-                                  className="pl-9"
-                                  disabled={isLoading || (lockoutUntil !== null && lockoutUntil > Date.now())}
-                                  {...field} 
-                                />
-                              </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      {lockoutUntil && lockoutUntil > Date.now() && (
-                        <p className="text-destructive text-sm">
-                          Account temporarily locked due to too many failed attempts. {remainingTime()}
-                        </p>
-                      )}
-                      <Button 
-                        type="submit" 
-                        className="w-full"
-                        disabled={isLoading || (lockoutUntil !== null && lockoutUntil > Date.now())}
-                      >
-                        {isLoading ? "Authenticating..." : "Login"}
-                      </Button>
-                    </form>
-                  </Form>
-                </CardContent>
-                <CardFooter className="text-xs text-muted-foreground text-center">
-                  For demo purposes, use password: admin123
-                </CardFooter>
-              </Card>
-            </div>
-          ) : (
-            <div>
-              <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-                <Button variant="outline" onClick={handleLogout} disabled={isLoading}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  {isLoading ? "Logging out..." : "Logout"}
-                </Button>
-              </div>
+    <div className="min-h-screen bg-muted/30">
+      {isLoggedIn ? (
+        <>
+          <AdminNavbar onLogout={handleLogout} isLoading={isLoading} />
+          <main className="pt-16 pb-20 px-4">
+            <div className="container mx-auto">
               <AdminDashboard />
             </div>
-          )}
-        </div>
-      </main>
-      <Footer />
-    </>
+          </main>
+        </>
+      ) : (
+        <main className="flex items-center justify-center min-h-screen bg-muted/30 p-4">
+          <div className="max-w-md w-full">
+            <Card className="border border-border shadow-md">
+              <CardHeader>
+                <Button 
+                  variant="ghost" 
+                  className="w-fit p-0 mb-4"
+                  onClick={() => navigate('/')}
+                >
+                  <ChevronLeft className="mr-1 h-4 w-4" />
+                  Back to website
+                </Button>
+                <CardTitle className="text-2xl font-bold">Admin Access</CardTitle>
+                <CardDescription>
+                  Enter your admin password or use biometric authentication to access the dashboard
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {isBiometricSupported && (
+                  <div className="mb-6 text-center">
+                    <Button 
+                      onClick={handleBiometricLogin} 
+                      disabled={isLoading} 
+                      className="w-full"
+                    >
+                      <Fingerprint className="mr-2 h-5 w-5" />
+                      Authenticate with Fingerprint
+                    </Button>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Use your device's biometric authentication
+                    </p>
+                    <div className="relative my-4">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">Or</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                              <Input 
+                                type="password" 
+                                placeholder="••••••••" 
+                                className="pl-9"
+                                disabled={isLoading || (lockoutUntil !== null && lockoutUntil > Date.now())}
+                                {...field} 
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {lockoutUntil && lockoutUntil > Date.now() && (
+                      <p className="text-destructive text-sm">
+                        Account temporarily locked due to too many failed attempts. {remainingTime()}
+                      </p>
+                    )}
+                    <Button 
+                      type="submit" 
+                      className="w-full"
+                      disabled={isLoading || (lockoutUntil !== null && lockoutUntil > Date.now())}
+                    >
+                      {isLoading ? "Authenticating..." : "Login"}
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+              <CardFooter className="text-xs text-muted-foreground text-center">
+                For demo purposes, use password: admin123
+              </CardFooter>
+            </Card>
+          </div>
+        </main>
+      )}
+    </div>
   );
 };
 

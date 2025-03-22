@@ -1,0 +1,147 @@
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(uuid())
+  name              String
+  email             String    @unique
+  password          String
+  role              String    @default("viewer") // admin, editor, contributor, viewer
+  status            String    @default("active") // active, inactive
+  lastLogin         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Page {
+  id                String    @id @default(uuid())
+  title             String
+  slug              String    @unique
+  content           String?   @db.Text
+  status            String    @default("draft") // draft, published
+  metaTitle         String?
+  metaDescription   String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  createdBy         String?
+  updatedBy         String?
+}
+
+model BlogPost {
+  id                String       @id @default(uuid())
+  title             String
+  slug              String       @unique
+  excerpt           String?
+  content           String       @db.Text
+  featured          Boolean      @default(false)
+  status            String       @default("draft") // draft, published
+  publishedAt       DateTime?
+  featuredImage     String?
+  metaTitle         String?
+  metaDescription   String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  createdBy         String?
+  updatedBy         String?
+  categories        Category[]   @relation("BlogPostToCategory")
+  tags              Tag[]        @relation("BlogPostToTag")
+}
+
+model Category {
+  id                String       @id @default(uuid())
+  name              String
+  slug              String       @unique
+  description       String?
+  posts             BlogPost[]   @relation("BlogPostToCategory")
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}
+
+model Tag {
+  id                String       @id @default(uuid())
+  name              String
+  slug              String       @unique
+  posts             BlogPost[]   @relation("BlogPostToTag")
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}
+
+model PortfolioProject {
+  id                String       @id @default(uuid())
+  title             String
+  slug              String       @unique
+  description       String       @db.Text
+  content           String?      @db.Text
+  client            String?
+  featured          Boolean      @default(false)
+  completionDate    DateTime?
+  status            String       @default("draft") // draft, published
+  featuredImage     String?
+  galleryImages     String[]
+  technologies      String[]
+  metaTitle         String?
+  metaDescription   String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}
+
+model ContactMessage {
+  id                String       @id @default(uuid())
+  name              String
+  email             String
+  phone             String?
+  subject           String?
+  message           String       @db.Text
+  status            String       @default("unread") // unread, read, responded, archived
+  responseText      String?      @db.Text
+  respondedAt       DateTime?
+  ipAddress         String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}
+
+model SiteSetting {
+  id                String       @id @default(uuid())
+  category          String       // general, seo, social, advanced
+  key               String       
+  value             String       @db.Text
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@unique([category, key])
+}
+
+model Media {
+  id                String       @id @default(uuid())
+  name              String
+  fileName          String
+  mimeType          String
+  size              Int
+  path              String
+  url               String
+  dimensions        String?      // Format: 1920x1080
+  alt               String?
+  caption           String?
+  folderId          String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  createdBy         String?
+}
+
+model MediaFolder {
+  id                String       @id @default(uuid())
+  name              String
+  parentId          String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}

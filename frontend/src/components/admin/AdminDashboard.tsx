@@ -12,6 +12,10 @@ import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import PolicyManager, { PolicyType } from '../policy/PolicyManager';
 import { Button } from '@/components/ui/button';
+import AdminPageManager from './AdminPageManager';
+import AdminUserManager from './AdminUserManager';
+import AdminMediaLibrary from './AdminMediaLibrary';
+import AdminSettings from './AdminSettings';
 
 const AdminDashboard = () => {
   const [openPolicy, setOpenPolicy] = useState<PolicyType | null>(null);
@@ -27,13 +31,15 @@ const AdminDashboard = () => {
   return (
     <>
       <Tabs defaultValue="analytics" className="w-full">
-        <TabsList className="grid w-full grid-cols-6 mb-8">
+        <TabsList className="grid w-full grid-cols-8 mb-8 overflow-x-auto flex-nowrap">
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="contact">Contact Details</TabsTrigger>
-          <TabsTrigger value="footer">Footer</TabsTrigger>
+          <TabsTrigger value="blog">Blog</TabsTrigger>
+          <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
+          <TabsTrigger value="pages">Pages</TabsTrigger>
+          <TabsTrigger value="media">Media</TabsTrigger>
+          <TabsTrigger value="contact">Contact</TabsTrigger>
           <TabsTrigger value="messages">Messages</TabsTrigger>
-          <TabsTrigger value="blog">Blog Manager</TabsTrigger>
-          <TabsTrigger value="portfolio">Portfolio Manager</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="analytics" className="mt-0">
@@ -59,17 +65,24 @@ const AdminDashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              <Alert className="mb-6">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Backend connection pending</AlertTitle>
+                <AlertDescription>
+                  This is a frontend template ready for future backend integration. To implement backend functionality, connect to your Node.js/Express API endpoints.
+                </AlertDescription>
+              </Alert>
               <AdminContactEdit />
             </CardContent>
           </Card>
         </TabsContent>
         
-        <TabsContent value="footer" className="mt-0">
+        <TabsContent value="pages" className="mt-0">
           <Card>
             <CardHeader>
-              <CardTitle>Footer Editor</CardTitle>
+              <CardTitle>Page Manager</CardTitle>
               <CardDescription>
-                Customize your website footer content and links
+                Create, edit, and organize website pages
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -77,10 +90,31 @@ const AdminDashboard = () => {
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Backend connection pending</AlertTitle>
                 <AlertDescription>
-                  This is a frontend template ready for future backend integration. Currently, all data is stored locally.
+                  This is a frontend template ready for future backend integration. To implement backend functionality, connect to your Node.js/Express API endpoints.
                 </AlertDescription>
               </Alert>
-              <AdminFooterEditor />
+              <AdminPageManager />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="settings" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Site Settings</CardTitle>
+              <CardDescription>
+                Manage website settings and configurations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Alert className="mb-6">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Backend connection pending</AlertTitle>
+                <AlertDescription>
+                  This is a frontend template ready for future backend integration. To implement backend functionality, connect to your Node.js/Express API endpoints.
+                </AlertDescription>
+              </Alert>
+              <AdminSettings />
               
               <div className="mt-8 border-t pt-6">
                 <h3 className="text-lg font-medium mb-4">Legal Policies</h3>
@@ -108,6 +142,8 @@ const AdminDashboard = () => {
                   </Button>
                 </div>
               </div>
+              
+              <AdminFooterEditor />
             </CardContent>
           </Card>
         </TabsContent>
@@ -125,7 +161,7 @@ const AdminDashboard = () => {
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Backend connection pending</AlertTitle>
                 <AlertDescription>
-                  This is a frontend template ready for future backend integration. Currently, all data is stored locally.
+                  This is a frontend template ready for future backend integration. To implement backend functionality, connect to your Node.js/Express API endpoints.
                 </AlertDescription>
               </Alert>
               <AdminMessages />
@@ -142,6 +178,13 @@ const AdminDashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              <Alert className="mb-6">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Backend connection pending</AlertTitle>
+                <AlertDescription>
+                  This is a frontend template ready for future backend integration. To implement backend functionality, connect to your Node.js/Express API endpoints.
+                </AlertDescription>
+              </Alert>
               <AdminBlogManager />
             </CardContent>
           </Card>
@@ -160,10 +203,31 @@ const AdminDashboard = () => {
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Backend connection pending</AlertTitle>
                 <AlertDescription>
-                  This is a frontend template ready for future backend integration. Currently, all data is stored locally.
+                  This is a frontend template ready for future backend integration. To implement backend functionality, connect to your Node.js/Express API endpoints.
                 </AlertDescription>
               </Alert>
               <AdminPortfolioManager />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="media" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Media Library</CardTitle>
+              <CardDescription>
+                Upload, organize, and manage your media files
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Alert className="mb-6">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Backend connection pending</AlertTitle>
+                <AlertDescription>
+                  This is a frontend template ready for future backend integration. To implement backend functionality, connect to your Node.js/Express API endpoints.
+                </AlertDescription>
+              </Alert>
+              <AdminMediaLibrary />
             </CardContent>
           </Card>
         </TabsContent>
