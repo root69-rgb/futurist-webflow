@@ -12,136 +12,98 @@ datasource db {
 }
 
 model User {
-  id                String    @id @default(uuid())
-  name              String
-  email             String    @unique
-  password          String
-  role              String    @default("viewer") // admin, editor, contributor, viewer
-  status            String    @default("active") // active, inactive
-  lastLogin         DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-}
-
-model Page {
-  id                String    @id @default(uuid())
-  title             String
-  slug              String    @unique
-  content           String?   @db.Text
-  status            String    @default("draft") // draft, published
-  metaTitle         String?
-  metaDescription   String?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  createdBy         String?
-  updatedBy         String?
-}
-
-model BlogPost {
-  id                String       @id @default(uuid())
-  title             String
-  slug              String       @unique
-  excerpt           String?
-  content           String       @db.Text
-  featured          Boolean      @default(false)
-  status            String       @default("draft") // draft, published
-  publishedAt       DateTime?
-  featuredImage     String?
-  metaTitle         String?
-  metaDescription   String?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  createdBy         String?
-  updatedBy         String?
-  categories        Category[]   @relation("BlogPostToCategory")
-  tags              Tag[]        @relation("BlogPostToTag")
-}
-
-model Category {
-  id                String       @id @default(uuid())
-  name              String
-  slug              String       @unique
-  description       String?
-  posts             BlogPost[]   @relation("BlogPostToCategory")
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-}
-
-model Tag {
-  id                String       @id @default(uuid())
-  name              String
-  slug              String       @unique
-  posts             BlogPost[]   @relation("BlogPostToTag")
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-}
-
-model PortfolioProject {
-  id                String       @id @default(uuid())
-  title             String
-  slug              String       @unique
-  description       String       @db.Text
-  content           String?      @db.Text
-  client            String?
-  featured          Boolean      @default(false)
-  completionDate    DateTime?
-  status            String       @default("draft") // draft, published
-  featuredImage     String?
-  galleryImages     String[]
-  technologies      String[]
-  metaTitle         String?
-  metaDescription   String?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-}
-
-model ContactMessage {
-  id                String       @id @default(uuid())
-  name              String
-  email             String
-  phone             String?
-  subject           String?
-  message           String       @db.Text
-  status            String       @default("unread") // unread, read, responded, archived
-  responseText      String?      @db.Text
-  respondedAt       DateTime?
-  ipAddress         String?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("viewer")
+  status    String   @default("active")
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SiteSetting {
-  id                String       @id @default(uuid())
-  category          String       // general, seo, social, advanced
-  key               String       
-  value             String       @db.Text
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
+  id        String   @id @default(uuid())
+  category  String
+  key       String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([category, key])
 }
 
-model Media {
-  id                String       @id @default(uuid())
-  name              String
-  fileName          String
-  mimeType          String
-  size              Int
-  path              String
-  url               String
-  dimensions        String?      // Format: 1920x1080
-  alt               String?
-  caption           String?
-  folderId          String?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  createdBy         String?
+model Page {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  content   String
+  meta      Json?
+  status    String   @default("draft")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model MediaFolder {
-  id                String       @id @default(uuid())
-  name              String
-  parentId          String?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
+model Media {
+  id          String   @id @default(uuid())
+  filename    String
+  originalName String
+  fileType    String
+  fileSize    Int
+  url         String
+  description String?
+  alt         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  isRead    Boolean  @default(false)
+  isArchived Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlogPost {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  content   String
+  excerpt   String?
+  coverImage String?
+  status    String   @default("draft")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  categories BlogCategory[] @relation("PostToCategory")
+}
+
+model BlogCategory {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     BlogPost[] @relation("PostToCategory")
+}
+
+model PortfolioItem {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String
+  images      String[]
+  client      String?
+  date        DateTime?
+  categories  String[]
+  skills      String[]
+  url         String?
+  status      String   @default("published")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
